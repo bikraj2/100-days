@@ -29,5 +29,7 @@ const start = async ()=>{
 }
 ///nothing just something
 
-start()
+start()=>{
+    
+}
 
