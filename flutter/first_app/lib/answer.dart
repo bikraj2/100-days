@@ -12,6 +12,7 @@ class Answer extends StatelessWidget {
       child: RaisedButton(
         color: Colors.blueAccent,
         child: Text(answerText),
+        padding: EdgeInsets.all(4 ),
         onPressed: func,
       ),
     );
