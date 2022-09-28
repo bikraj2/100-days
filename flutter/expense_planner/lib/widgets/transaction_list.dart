@@ -4,78 +4,66 @@ import 'package:intl/intl.dart';
 import '../models/transactions.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-      amount: 69.88,
-      id: 't1',
-      date: DateTime.now(),
-      title: 'New shoes',
-    ),
-    Transaction(
-      amount: 55.12,
-      id: 't2',
-      date: DateTime.now(),
-      title: 'New Shirt',
-    ),
-    Transaction(
-      amount: 99.3,
-      id: 't3',
-      date: DateTime.now(),
-      title: 'New Pants',
-    )
-  ];
-
+  final List<Transaction> transactions;
+  final deleteTx;
+  const TransactionList({Key key, this.transactions,this.deleteTx}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: transactions.map((tx) {
-        return Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 15,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.purple,
-                    width: 2,
-                  ),
-                ),
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  '\$${tx.amount}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.purple,
-                  ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+    return Container(
+        height: 400,
+        child: transactions.length == 0
+            ? Column(
+                children: [
                   Text(
-                    tx.title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    "No transactions added yet",
+                    style: Theme.of(context).textTheme.headline6,
                   ),
-                  Text(
-                    DateFormat.yMMMd().format(tx.date),
-                    style: TextStyle(
-                      color: Colors.grey,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    child: Image.asset(
+                      "assets/image/waiting.png",
+                      fit: BoxFit.cover,
                     ),
+                    height: 200,
                   ),
                 ],
-              ),
-            ],
-          ),
-        );
-      }).toList(),
-    );
+              )
+            : ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FittedBox(
+                            child: Text('\$${transactions[index].amount}'),
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        '${transactions[index].title}',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      subtitle: Text(
+                        DateFormat.yMMMd().format(transactions[index].date),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () => deleteTx(transactions[index].id),
+                      ),
+                    ),
+                  );
+                },
+                itemCount: transactions.length,
+              ));
   }
+
 }
