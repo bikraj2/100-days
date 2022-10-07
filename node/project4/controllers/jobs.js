@@ -5,7 +5,7 @@ const getjob = (req, res) => {
   res.send('jobs');
 };
 const createjobs = (req, res) => {
-  res.send('create jobs');
+  res.json(req.user);
 };
 const updatejobs = (req, res) => {
   res.send('updatejobs');
